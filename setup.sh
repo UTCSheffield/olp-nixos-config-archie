@@ -8,6 +8,11 @@
 #
 # https://eipi.xyz/blog/nixos-x86-64
 
+if [ $(whoami) != "root" ]; then
+    echo "not root"
+    exit;
+fi
+
 echo "--------------------------------------------------------------------------------"
 echo "Your attached storage devices will now be listed."
 echo "--------------------------------------------------------------------------------"
@@ -15,7 +20,7 @@ echo "Detected the following devices:"
 echo
 
 i=0
-for device in $(sudo fdisk -l | grep "^Disk /dev" | awk "{print \$2}" | sed "s/://"); do
+for device in $(fdisk -l | grep "^Disk /dev" | awk "{print \$2}" | sed "s/://"); do
     echo "[$i] $device"
     i=$((i+1))
     DEVICES[$i]=$device
@@ -65,7 +70,7 @@ if [ "$ANSWER" = "y" ]; then
       echo p # print layout
 
       echo w # write changes
-    ) | sudo fdisk ${DEV}
+    ) | fdisk ${DEV}
 else
     echo "cancelled."
     exit
@@ -78,7 +83,7 @@ function align_check() {
     (
       echo
       echo $1
-    ) | sudo parted $DEV align-check | grep aligned | sed "s/^/partition /"
+    ) | parted $DEV align-check | grep aligned | sed "s/^/partition /"
 }
 
 align_check 1
@@ -89,7 +94,7 @@ echo "--------------------------------------------------------------------------
 echo "getting created partition names..."
 
 i=1
-for part in $(sudo fdisk -l | grep $DEV | grep -v "," | awk '{print $1}'); do
+for part in $(fdisk -l | grep $DEV | grep -v "," | awk '{print $1}'); do
     echo "[$i] $part"
     i=$((i+1))
     PARTITIONS[$i]=$part
@@ -104,32 +109,35 @@ read -p "Press enter to install NixOS." NULL
 
 echo "making filesystem on ${P1}..."
 
-sudo mkfs.ext4 -L nixos ${P1}
+mkfs.ext4 -L nixos ${P1}
 
 echo "enabling swap..."
 
-sudo mkswap -L swap ${P2}
-sudo swapon ${P2}
+mkswap -L swap ${P2}
+swapon ${P2}
 
 echo "making filesystem on ${P3}..."
 
-sudo mkfs.fat -F 32 -n boot ${P3}            # (for UEFI systems only)
+mkfs.fat -F 32 -n boot ${P3}            # (for UEFI systems only)
 
 echo "mounting filesystems..."
 
-sudo mount /dev/disk/by-label/nixos /mnt
-sudo mkdir -p /mnt/boot                      # (for UEFI systems only)
-sudo mount /dev/disk/by-label/boot /mnt/boot # (for UEFI systems only)
+mount /dev/disk/by-label/nixos /mnt
+mkdir -p /mnt/boot                      # (for UEFI systems only)
+mount /dev/disk/by-label/boot /mnt/boot # (for UEFI systems only)
 
 echo "generating NixOS configuration..."
 
-sudo nixos-generate-config --root /mnt
+nixos-generate-config --root /mnt
 
-sudo cat /etc/config.nix > /mnt/etc/nixos/configuration.nix
+cat /etc/config.nix > /mnt/etc/nixos/configuration.nix
+
+echo "copying custom packages"
+cp -r /etc/packages /mnt/etc/nixos/packages
 
 echo "installing NixOS..."
 
-sudo nixos-install
+nixos-install
 
 read -p "Remove installation media and press enter to reboot." NULL
 
