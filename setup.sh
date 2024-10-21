@@ -10,13 +10,13 @@
 
 echo "--------------------------------------------------------------------------------"
 echo "Your attached storage devices will now be listed."
-
 echo "--------------------------------------------------------------------------------"
 echo "Detected the following devices:"
 echo
 
 i=0
 for device in $(sudo fdisk -l | grep "^Disk /dev" | awk "{print \$2}" | sed "s/://"); do
+    echo "[$i] $device"
     i=$((i+1))
     DEVICES[$i]=$device
 done
