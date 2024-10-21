@@ -2,7 +2,7 @@
   lib,
   stdenv,
   buildPythonPackage,
-  fetchFromGithub,
+  fetchFromGitHub,
   tkinter,
   supercollider,
 }:
@@ -11,7 +11,7 @@ buildPythonPackage rec {
   pname = "foxdot";
   version = "v0.8.12";
 
-  src = fetchFromGithub {
+  src = fetchFromGitHub {
     owner = "UTCSheffield";
     repo = "FoxDot";
     inherit version;
