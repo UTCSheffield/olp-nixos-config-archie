@@ -30,7 +30,7 @@ read -p "How much swap space do you need in GiB (e.g. 8)? " SWAP
 
 read -p "Will now partition ${DEV} with swap size ${SWAP}GiB. Ok? Type 'y': " ANSWER
 
-if [ "$ANSWER" = "go" ]; then
+if [ "$ANSWER" = "y" ]; then
     echo "partitioning ${DEV}..."
     (
       echo g # new gpt partition table
