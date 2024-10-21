@@ -10,9 +10,6 @@
 
 echo "--------------------------------------------------------------------------------"
 echo "Your attached storage devices will now be listed."
-read -p "Press 'q' to exit the list. Press enter to continue." NULL
-
-sudo fdisk -l | less
 
 echo "--------------------------------------------------------------------------------"
 echo "Detected the following devices:"
@@ -20,7 +17,6 @@ echo
 
 i=0
 for device in $(sudo fdisk -l | grep "^Disk /dev" | awk "{print \$2}" | sed "s/://"); do
-    echo "[$i] $device"
     i=$((i+1))
     DEVICES[$i]=$device
 done
@@ -32,7 +28,7 @@ DEV=${DEVICES[$(($DEVICE+1))]}
 
 read -p "How much swap space do you need in GiB (e.g. 8)? " SWAP
 
-read -p "Will now partition ${DEV} with swap size ${SWAP}GiB. Ok? Type 'go': " ANSWER
+read -p "Will now partition ${DEV} with swap size ${SWAP}GiB. Ok? Type 'y': " ANSWER
 
 if [ "$ANSWER" = "go" ]; then
     echo "partitioning ${DEV}..."
@@ -128,8 +124,6 @@ sudo mount /dev/disk/by-label/boot /mnt/boot # (for UEFI systems only)
 echo "generating NixOS configuration..."
 
 sudo nixos-generate-config --root /mnt
-
-read -p "Press enter and the Nix configuration will be opened in nano."
 
 sudo cat /etc/config.nix > /mnt/etc/nixos/configuration.nix
 
