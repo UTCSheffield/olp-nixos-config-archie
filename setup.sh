@@ -141,7 +141,7 @@ nixos-install
 
 echo "run any scripts inside new system then 'exit' to exit"
 
-nixos-enter
+nixos-enter -c "nixos-rebuild boot"
 
 read -p "Remove installation media and press enter to reboot." NULL
 
