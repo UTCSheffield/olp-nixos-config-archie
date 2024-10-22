@@ -130,16 +130,15 @@ echo "generating NixOS configuration..."
 
 nixos-generate-config --root /mnt
 
-cat /etc/config.nix > /mnt/etc/nixos/configuration.nix
+cp /etc/config.nix /mnt/etc/nixos/configuration.nix
 
-echo "copying custom packages"
-cp -r /etc/foxdot.nix /mnt/etc/nixos/foxdot.nix
+cp /etc/foxdot.nix /mnt/etc/nixos/foxdot.nix
 
 echo "installing NixOS..."
 
 nixos-install
 
-echo "run any scripts inside new system then 'exit' to exit"
+nixos-enter -c "echo \"nixos\" | passwd nixos --stdin"
 
 nixos-enter -c "nixos-rebuild boot"
 
