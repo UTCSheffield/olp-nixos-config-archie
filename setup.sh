@@ -139,6 +139,10 @@ echo "installing NixOS..."
 
 nixos-install
 
+echo "run any scripts inside new system then 'exit' to exit"
+
+nixos-enter
+
 read -p "Remove installation media and press enter to reboot." NULL
 
 reboot

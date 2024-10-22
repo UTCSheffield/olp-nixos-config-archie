@@ -2,8 +2,9 @@
 
 let
   utc-foxdot = import ./packages/FoxDot/default.nix {
-    inherit (pkgs) lib stdenv fetchFromGitHub tkinter supercollider;
+    inherit (pkgs) lib stdenv fetchFromGitHub supercollider;
     buildPythonPackage = pkgs.python3Packages.buildPythonPackage;
+    tkinter = pkgs.python3Packages.tkinter;
   };
 in
 {

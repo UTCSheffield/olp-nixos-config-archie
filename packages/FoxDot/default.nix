@@ -14,8 +14,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "UTCSheffield";
     repo = "FoxDot";
-    inherit version;
-    sha256 = "";
+    rev = "v0.8.12";
+    sha256 = "sha256-WgbmablVUPSp/1h1E1A56kfV1CwWsS5cPzzUp/HZHjU=";
   };
 
   propagatedBuildInputs =
