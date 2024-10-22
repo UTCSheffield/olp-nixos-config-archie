@@ -13,5 +13,5 @@
 
   environment.etc."config.nix".source = ./configuration.nix;
 
-  environment.etc."packages".source = ./packages;
+  environment.etc."foxdot.nix".source = ./packages/FoxDot/default.nix;
 }

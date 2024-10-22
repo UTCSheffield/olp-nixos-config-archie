@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  utc-foxdot = import ./packages/FoxDot/default.nix {
+  utc-foxdot = import ./foxdot.nix {
     inherit (pkgs) lib stdenv fetchFromGitHub supercollider;
     buildPythonPackage = pkgs.python3Packages.buildPythonPackage;
     tkinter = pkgs.python3Packages.tkinter;

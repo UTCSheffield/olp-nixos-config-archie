@@ -133,7 +133,7 @@ nixos-generate-config --root /mnt
 cat /etc/config.nix > /mnt/etc/nixos/configuration.nix
 
 echo "copying custom packages"
-cp -r /etc/packages /mnt/etc/nixos/packages
+cp -r /etc/foxdot.nix /mnt/etc/nixos/foxdot.nix
 
 echo "installing NixOS..."
 
